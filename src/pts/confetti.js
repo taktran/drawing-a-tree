@@ -1,12 +1,14 @@
 import { Pt, Util, Const, Triangle, Rectangle } from "pts";
 
+import { LIGHT_COLORS } from "../utils/colors";
+
 /**
  * Adapted from https://ptsjs.org/demo/edit/?name=pt.extends
  */
 export class Confetti extends Pt {
   constructor(...args) {
     super(...args);
-    this.color = ["#f03", "#09f", "#0c6", "#fff"][Util.randomInt(4)];
+    this.color = LIGHT_COLORS[Util.randomInt(LIGHT_COLORS.length)];
     this.size = Math.random() * 7 + 2;
     this.angle = Math.random() * Const.two_pi;
     this.dir = Math.random() > 0.5 ? 1 : -1;
