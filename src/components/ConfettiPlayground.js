@@ -16,7 +16,7 @@ const style = {
   bottom: 0
 };
 
-export function Playground() {
+export function ConfettiPlayground() {
   const pts = new Group();
   return (
     <>

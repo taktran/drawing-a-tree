@@ -1,13 +1,13 @@
 import React from "react";
 
-import { Playground } from "./components/Playground";
+import { ConfettiPlayground } from "./components/ConfettiPlayground";
 
 import "./styles.css";
 
 export default function App() {
   return (
     <div className="App">
-      <Playground />
+      <ConfettiPlayground />
     </div>
   );
 }
