@@ -6,8 +6,10 @@ import { LIGHT_COLORS } from "../utils/colors";
  * Adapted from https://ptsjs.org/demo/edit/?name=pt.extends
  */
 export class Confetti extends Pt {
-  constructor(...args) {
-    super(...args);
+  constructor({ space, point }) {
+    super(point);
+
+    this.space = space;
     this.color = LIGHT_COLORS[Util.randomInt(LIGHT_COLORS.length)];
     this.size = Math.random() * 7 + 2;
     this.angle = Math.random() * Const.two_pi;
@@ -16,7 +18,7 @@ export class Confetti extends Pt {
   }
 
   render(form) {
-    if (this.y < 200) {
+    if (this.y < this.space.size.y) {
       this.y += 2 / this.size + Math.random();
       this.x += Math.random() - Math.random();
       this.angle +=
