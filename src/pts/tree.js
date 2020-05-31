@@ -5,8 +5,19 @@ import { COLORS } from "../utils/colors";
 const { primaryGreen, secondaryYellow } = COLORS;
 
 export class Tree extends Pt {
-  constructor({ point, width, height, trunkColor = secondaryYellow[9], leavesColor }) {
+  constructor(args) {
+    const {
+      point,
+      width,
+      height,
+      trunkColor = secondaryYellow[9],
+      leavesColor
+    } = args;
+
     super(point);
+
+    // Store args for cloning
+    this.args = args;
 
     this.trunkColor = trunkColor;
     this.trunkWidth = width / 10;
@@ -17,6 +28,11 @@ export class Tree extends Pt {
       this.hasLeaves = true;
       this.leavesColor = leavesColor;
     }
+  }
+
+  clone(newArgs) {
+    const args = Object.assign({}, this.args, newArgs);
+    return new Tree(args);
   }
 
   addLeaves({ color = primaryGreen[3] } = {}) {

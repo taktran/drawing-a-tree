@@ -18,7 +18,9 @@ const style = {
 
 const leavesColors = [
   ...primaryGreen.slice(1),
-  ...secondaryYellow.slice(1, secondaryYellow.length - 3)
+  "#F5A40E",
+  secondaryYellow[4],
+  secondaryYellow[5]
 ];
 const trunkColors = [
   "#725409",
@@ -51,7 +53,7 @@ export function TreePlayground() {
   const plantedTrees = [];
   const width = 50;
   const height = 100;
-  let placeholderTreeProps = createPlaceholderTreeProps();
+  let placeholderTree;
 
   return (
     <>
@@ -63,9 +65,9 @@ export function TreePlayground() {
           plantedTrees.forEach(tree => tree.render(form));
 
           // Create placeholder tree based on where the pointer is
-          const placeholderTree = new Tree({
+          placeholderTree = new Tree({
             point: space.pointer,
-            ...placeholderTreeProps
+            ...createPlaceholderTreeProps()
           });
 
           // Render placeholder tree
@@ -73,10 +75,8 @@ export function TreePlayground() {
         }}
         onAction={(space, form, type, px, py, evt) => {
           if (type == "down") {
-            // Add leaves
-            const newTree = new Tree({
-              point: space.pointer,
-              ...placeholderTreeProps,
+            // Set up new tree
+            const newTree = placeholderTree.clone({
               width,
               height,
               leavesColor: getRandomLeavesColor()
@@ -85,8 +85,8 @@ export function TreePlayground() {
             // Plant tree
             plantedTrees.push(newTree);
 
-            // New placeholder tree properties
-            placeholderTreeProps = createPlaceholderTreeProps();
+            // Delete placeholder tree, for a new one to be created in `onAnimate`
+            placeholderTreeProps = undefined;
           }
         }}
       />
