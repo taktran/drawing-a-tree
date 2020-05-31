@@ -1,7 +1,7 @@
 import React from "react";
 
 import { QuickStartCanvas } from "react-pts-canvas";
-import { Util, Color } from "pts";
+import { Util } from "pts";
 
 import { COLORS } from "../utils/colors";
 import { Tree } from "../pts/tree";
@@ -74,7 +74,7 @@ export function TreePlayground() {
           placeholderTree.render(form);
         }}
         onAction={(space, form, type, px, py, evt) => {
-          if (type == "down") {
+          if (type === "down") {
             // Set up new tree
             const newTree = placeholderTree.clone({
               width,
@@ -84,9 +84,6 @@ export function TreePlayground() {
 
             // Plant tree
             plantedTrees.push(newTree);
-
-            // Delete placeholder tree, for a new one to be created in `onAnimate`
-            placeholderTreeProps = undefined;
           }
         }}
       />
