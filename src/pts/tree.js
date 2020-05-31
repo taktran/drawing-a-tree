@@ -1,4 +1,4 @@
-import { Pt, Rectangle } from "pts";
+import { Pt, Rectangle, Triangle } from "pts";
 
 import { COLORS } from "../utils/colors";
 
@@ -22,6 +22,7 @@ export class Tree extends Pt {
     this.trunkColor = trunkColor;
     this.trunkWidth = width / 10;
     this.trunkHeight = height / 2;
+    this.trunkBaseHeight = height / 15;
     this.leavesRadius = width / 2;
 
     if (leavesColor) {
@@ -41,14 +42,21 @@ export class Tree extends Pt {
   }
 
   render(form) {
-    const top = this.y - this.trunkHeight;
+    const top = this.y - this.trunkHeight - this.trunkBaseHeight;
+    const middleX = this.x - this.trunkWidth / 2;
     const topLeft = [this.x - this.trunkWidth, top];
-    const topMiddle = [this.x - this.trunkWidth / 2, top];
-    const shape = Rectangle.corners(
+    const topMiddle = [middleX, top];
+    const trunk = Rectangle.corners(
       Rectangle.fromTopLeft(topLeft, this.trunkWidth, this.trunkHeight)
     );
+    const trunkBaseCenter = [middleX, this.y - (2 * this.trunkBaseHeight) / 3];
+    const trunkBase = Triangle.fromCenter(
+      trunkBaseCenter,
+      this.trunkBaseHeight
+    );
 
-    form.fillOnly(this.trunkColor).polygon(shape);
+    form.fillOnly(this.trunkColor).polygon(trunk);
+    form.fillOnly(this.trunkColor).polygon(trunkBase);
 
     if (this.hasLeaves) {
       form
