@@ -37,12 +37,12 @@ function getRandomTrunkColor() {
   return trunkColors[Util.randomInt(trunkColors.length)];
 }
 
-function createPlaceholderTreeProps({ width = 20, height = 10 } = {}) {
+function createPlaceholderTreeProps({ width = 20, height = 20 } = {}) {
   const trunkColor = getRandomTrunkColor();
 
   return {
-    width: 20,
-    height: 20,
+    width,
+    height,
     trunkColor
   };
 }
@@ -77,8 +77,8 @@ export function TreePlayground() {
             const newTree = new Tree({
               point: space.pointer,
               ...placeholderTreeProps,
-              width: 50,
-              height: 100,
+              width,
+              height,
               leavesColor: getRandomLeavesColor()
             });
 
