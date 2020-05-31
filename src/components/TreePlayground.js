@@ -54,6 +54,7 @@ export function TreePlayground() {
   const width = 50;
   const height = 100;
   let placeholderTree;
+  let placeholderTreeProps = createPlaceholderTreeProps();
 
   return (
     <>
@@ -67,7 +68,7 @@ export function TreePlayground() {
           // Create placeholder tree based on where the pointer is
           placeholderTree = new Tree({
             point: space.pointer,
-            ...createPlaceholderTreeProps()
+            ...placeholderTreeProps
           });
 
           // Render placeholder tree
@@ -84,6 +85,9 @@ export function TreePlayground() {
 
             // Plant tree
             plantedTrees.push(newTree);
+
+            // New placeholder tree props
+            placeholderTreeProps = createPlaceholderTreeProps();
           }
         }}
       />
