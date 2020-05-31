@@ -72,7 +72,7 @@ export function TreePlayground() {
           placeholderTree.render(form);
         }}
         onAction={(space, form, type, px, py, evt) => {
-          if (type == "up") {
+          if (type == "down") {
             // Add leaves
             const newTree = new Tree({
               point: space.pointer,
