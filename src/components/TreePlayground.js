@@ -37,12 +37,21 @@ function getRandomTrunkColor() {
   return trunkColors[Util.randomInt(trunkColors.length)];
 }
 
+function createPlaceholderTreeProps({ width = 20, height = 10 } = {}) {
+  const trunkColor = getRandomTrunkColor();
+
+  return {
+    width: 20,
+    height: 20,
+    trunkColor
+  };
+}
+
 export function TreePlayground() {
   const plantedTrees = [];
   const width = 50;
   const height = 100;
-  let currentTree;
-  let trunkColor = getRandomTrunkColor();
+  let placeholderTreeProps = createPlaceholderTreeProps();
 
   return (
     <>
@@ -50,30 +59,34 @@ export function TreePlayground() {
         background={neutrals[0]}
         style={style}
         onAnimate={(space, form, time, ftime) => {
-          currentTree = new Tree({
-            point: space.pointer,
-            width,
-            height,
-            trunkColor
-          });
-
-          // Render current tree
-          currentTree.render(form);
-
           // Render all planted trees
           plantedTrees.forEach(tree => tree.render(form));
+
+          // Create placeholder tree based on where the pointer is
+          const placeholderTree = new Tree({
+            point: space.pointer,
+            ...placeholderTreeProps
+          });
+
+          // Render placeholder tree
+          placeholderTree.render(form);
         }}
         onAction={(space, form, type, px, py, evt) => {
           if (type == "up") {
             // Add leaves
-            currentTree.addLeaves({ color: getRandomLeavesColor() });
+            const newTree = new Tree({
+              point: space.pointer,
+              ...placeholderTreeProps,
+              width: 50,
+              height: 100,
+              leavesColor: getRandomLeavesColor()
+            });
 
             // Plant tree
-            plantedTrees.push(currentTree);
-            currentTree = undefined;
+            plantedTrees.push(newTree);
 
-            // New trunk color
-            trunkColor = getRandomTrunkColor();
+            // New placeholder tree properties
+            placeholderTreeProps = createPlaceholderTreeProps();
           }
         }}
       />
