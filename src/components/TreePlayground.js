@@ -39,7 +39,7 @@ function getRandomTrunkColor() {
   return trunkColors[Util.randomInt(trunkColors.length)];
 }
 
-function createPlaceholderTreeProps({ width = 20, height = 20 } = {}) {
+function createPlaceholderTreeProps({ width = 30, height = 20 } = {}) {
   const trunkColor = getRandomTrunkColor();
 
   return {
