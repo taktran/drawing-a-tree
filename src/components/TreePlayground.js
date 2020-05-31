@@ -19,7 +19,7 @@ const style = {
 const leavesColors = [
   ...primaryGreen.slice(1),
   "#F5A40E",
-  secondaryYellow[4],
+  secondaryYellow[3],
   secondaryYellow[5]
 ];
 const trunkColors = [
