@@ -1,8 +1,13 @@
-import { Pt, Rectangle, Triangle } from "pts";
+import { Pt, Rectangle, Triangle, Util } from "pts";
 
 import { COLORS } from "../utils/colors";
 
 const { primaryGreen, secondaryYellow } = COLORS;
+
+const randomDeltas = [-2 - 1, 0, 1, 2];
+function getRandomDelta() {
+  return randomDeltas[Util.randomInt(randomDeltas.length)];
+}
 
 export class Tree extends Pt {
   constructor(args) {
@@ -16,19 +21,45 @@ export class Tree extends Pt {
 
     super(point);
 
-    // Store args for cloning
     this.args = args;
 
+    this.point = point;
+    this.width = width;
+    this.height = height;
+
+    const { leavesCenter } = this.getTreeCoords({ point, width, height });
+    this.currentLeavesCenter = leavesCenter;
+
     this.trunkColor = trunkColor;
-    this.trunkWidth = width / 10;
-    this.trunkHeight = height / 2;
-    this.trunkBaseHeight = height / 15;
-    this.leavesRadius = width / 2;
 
     if (leavesColor) {
       this.hasLeaves = true;
       this.leavesColor = leavesColor;
     }
+  }
+
+  getTreeCoords({ point, width, height }) {
+    const trunkWidth = width / 10;
+    const trunkHeight = height / 2;
+    const trunkBaseHeight = height / 15;
+    const leavesRadius = width / 2;
+
+    const top = point.y - trunkHeight - trunkBaseHeight;
+    const middleX = point.x - trunkWidth / 2;
+
+    const trunkTopLeft = [point.x - trunkWidth, top];
+    const leavesCenter = new Pt(middleX, top);
+    const trunkBaseCenter = [middleX, point.y - (2 * trunkBaseHeight) / 3];
+
+    return {
+      trunkTopLeft,
+      trunkWidth,
+      trunkHeight,
+      trunkBaseCenter,
+      trunkBaseHeight,
+      leavesCenter,
+      leavesRadius
+    };
   }
 
   clone(newArgs) {
@@ -41,19 +72,35 @@ export class Tree extends Pt {
     this.leavesColor = color;
   }
 
+  moveLeaves() {
+    const { leavesCenter } = this.getTreeCoords({
+      point: this.point,
+      width: this.width,
+      height: this.height
+    });
+    this.currentLeavesCenter = [
+      leavesCenter.x + getRandomDelta(),
+      leavesCenter.y + getRandomDelta()
+    ];
+  }
+
   render(form) {
-    const top = this.y - this.trunkHeight - this.trunkBaseHeight;
-    const middleX = this.x - this.trunkWidth / 2;
-    const topLeft = [this.x - this.trunkWidth, top];
-    const topMiddle = [middleX, top];
-    const trunk = Rectangle.corners(
-      Rectangle.fromTopLeft(topLeft, this.trunkWidth, this.trunkHeight)
-    );
-    const trunkBaseCenter = [middleX, this.y - (2 * this.trunkBaseHeight) / 3];
-    const trunkBase = Triangle.fromCenter(
+    const {
+      trunkTopLeft,
+      trunkWidth,
+      trunkHeight,
       trunkBaseCenter,
-      this.trunkBaseHeight
+      trunkBaseHeight,
+      leavesRadius
+    } = this.getTreeCoords({
+      point: this.point,
+      width: this.width,
+      height: this.height
+    });
+    const trunk = Rectangle.corners(
+      Rectangle.fromTopLeft(trunkTopLeft, trunkWidth, trunkHeight)
     );
+    const trunkBase = Triangle.fromCenter(trunkBaseCenter, trunkBaseHeight);
 
     form.fillOnly(this.trunkColor).polygon(trunk);
     form.fillOnly(this.trunkColor).polygon(trunkBase);
@@ -61,7 +108,7 @@ export class Tree extends Pt {
     if (this.hasLeaves) {
       form
         .fillOnly(this.leavesColor)
-        .point(topMiddle, this.leavesRadius, "circle");
+        .point(this.currentLeavesCenter, leavesRadius, "circle");
     }
   }
 }

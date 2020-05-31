@@ -1,7 +1,7 @@
 import React from "react";
 
 import { QuickStartCanvas } from "react-pts-canvas";
-import { Util } from "pts";
+import { Util, Tempo } from "pts";
 
 import { COLORS } from "../utils/colors";
 import { Tree } from "../pts/tree";
@@ -53,6 +53,7 @@ export function TreePlayground() {
   const plantedTrees = [];
   const width = 50;
   const height = 100;
+  const tempo = new Tempo(120);
   let placeholderTree;
   let placeholderTreeProps = createPlaceholderTreeProps();
 
@@ -61,6 +62,16 @@ export function TreePlayground() {
       <QuickStartCanvas
         background={neutrals[0]}
         style={style}
+        onStart={(bound, space) => {
+          let fiveBeats = tempo.every(1);
+
+          fiveBeats.start(count => {
+            // Move leaves of all trees
+            plantedTrees.forEach(tree => tree.moveLeaves());
+          });
+
+          space.add(tempo);
+        }}
         onAnimate={(space, form, time, ftime) => {
           // Render all planted trees
           plantedTrees.forEach(tree => tree.render(form));
