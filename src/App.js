@@ -1,13 +1,13 @@
 import React from "react";
 
-import { ConfettiPlayground } from "./components/ConfettiPlayground";
+import { TreePlayground } from "./components/TreePlayground";
 
 import "./styles.css";
 
 export default function App() {
   return (
     <div className="App">
-      <ConfettiPlayground />
+      <TreePlayground />
     </div>
   );
 }
