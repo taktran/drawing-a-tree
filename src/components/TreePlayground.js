@@ -63,9 +63,7 @@ export function TreePlayground() {
         background={neutrals[0]}
         style={style}
         onStart={(bound, space) => {
-          let fiveBeats = tempo.every(1);
-
-          fiveBeats.start(count => {
+          tempo.every(1).start(count => {
             // Move leaves of all trees
             plantedTrees.forEach(tree => tree.moveLeaves());
           });
